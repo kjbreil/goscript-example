@@ -1,0 +1,28 @@
+websocket:
+  host: 192.168.1.2
+  port: 8123
+  token: <token>
+mqtt:
+  node_id: goscript_example
+  mqtt:
+    host: 192.168.1.2
+    port: 1883
+    ssl: false
+lights:
+  circadian:
+    lat: 47.6062
+    long: -122.3321
+    min_temperature: 50
+    max_temperature: 450
+    min_brightness_pct: 50
+    max_brightness_pct: 100
+  circadian_all:
+    enabled: true
+  motion_lights:
+    office:
+      timeout: 120
+      turn_on: true
+      detectors:
+        - binary_sensor.office_motion_occupancy
+      entities:
+        - light.office_lights
