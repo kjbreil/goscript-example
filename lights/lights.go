@@ -23,12 +23,12 @@ func Triggers(gs *goscript.GoScript) []*goscript.Trigger {
 	}
 	l := inter.(*Lights)
 	l.service = gs.ServiceChan
-	l.logger = gs.GetLogger()
+	l.logger = gs.Logger()
 
 	l.Circadian.AddGoscript(gs)
 
 	var triggers []*goscript.Trigger
-	// Setup the motion lights
+	// Set up the motion lights
 	triggers = append(triggers, l.motion()...)
 	triggers = append(triggers, l.circadianAll()...)
 

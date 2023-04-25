@@ -58,17 +58,28 @@ func (c *Circadian) Calculate() (float64, float64) {
 	return c.currentTemperature, c.currentBrightnessPct
 }
 
+func (c *Circadian) Temperature() float64 {
+	return c.currentTemperature
+}
+
+func (c *Circadian) BrightnessPct() float64 {
+	return c.currentBrightnessPct
+}
+func (c *Circadian) Transition() float64 {
+	return c.transition
+}
+
 func (c *Circadian) TurnOn(entities ...string) {
 	if len(entities) == 0 {
 		return
 	}
 	c.Calculate()
 
-	c.service <- services.NewLightTurnOn(services.Targets(entities...), &services.LightTurnOnParams{
-		BrightnessPct: &c.currentBrightnessPct,
-		ColorTemp:     &c.currentTemperature,
-		Transition:    &c.transition,
-	})
+	c.service <- services.NewLightTurnOn(services.Targets(entities...)).
+		BrightnessPct(c.currentBrightnessPct).
+		ColorTemp(c.currentTemperature).
+		Transition(c.transition)
+
 }
 
 func (c *Circadian) TurnOnTemperature(entities ...string) {
@@ -77,16 +88,27 @@ func (c *Circadian) TurnOnTemperature(entities ...string) {
 	}
 	c.Calculate()
 
-	c.service <- services.NewLightTurnOn(services.Targets(entities...), &services.LightTurnOnParams{
-		ColorTemp:  &c.currentTemperature,
-		Transition: &c.transition,
-	})
+	c.service <- services.NewLightTurnOn(services.Targets(entities...)).
+		ColorTemp(c.currentTemperature).
+		Transition(c.transition)
+
+}
+func (c *Circadian) TurnOnTemperatureManualBrightness(brightness float64, entities ...string) {
+	if len(entities) == 0 {
+		return
+	}
+	c.Calculate()
+
+	c.service <- services.NewLightTurnOn(services.Targets(entities...)).
+		BrightnessPct(brightness).
+		ColorTemp(c.currentTemperature).
+		Transition(c.transition)
+
 }
 
 func (c *Circadian) TurnOff(entities ...string) {
-	c.service <- services.NewLightTurnOff(services.Targets(entities...), &services.LightTurnOffParams{
-		Transition: &c.transition,
-	})
+	c.service <- services.NewLightTurnOff(services.Targets(entities...)).
+		Transition(c.transition)
 }
 
 func mapRange(rangeLow, rangeHigh, mapLow, mapHigh, value float64) float64 {

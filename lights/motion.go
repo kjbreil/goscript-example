@@ -52,7 +52,7 @@ func (l *motionLight) turnOnLights(t *goscript.Task) {
 	turnOn := l.TurnOn
 	l.logger.Info(fmt.Sprintf("Motion Detected: %s", t.Message.DomainEntity()))
 	for _, e := range l.BlockIfOn {
-		for _, s := range t.States {
+		for _, s := range t.States.Slice() {
 			if e == s.DomainEntity && s.State == "on" {
 				turnOn = false
 			}
@@ -63,7 +63,7 @@ func (l *motionLight) turnOnLights(t *goscript.Task) {
 		l.circadian.TurnOn(l.Entities...)
 	} else {
 		allOff := true
-		for _, s := range t.States {
+		for _, s := range t.States.Slice() {
 			if s.Domain == "light" && s.State == "on" {
 				allOff = false
 			}

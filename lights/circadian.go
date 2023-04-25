@@ -47,7 +47,7 @@ func (ca *circadianAll) changeLightTemperature(t *goscript.Task) {
 
 	var entitiesToChangeBrightness []string
 	var entitiesToChangeTemperature []string
-	for k, s := range t.States {
+	for k, s := range t.States.Map() {
 		var brightness float64
 		if b, ok := s.Attributes["brightness"]; ok {
 			brightness = b.(float64)

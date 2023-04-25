@@ -38,7 +38,7 @@ func main() {
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 
-	gs.GetLogger().Info("Connected to the server")
+	gs.Logger().Info("Connected to the server")
 	<-done
 
 	gs.Close()
